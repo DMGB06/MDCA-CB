@@ -42,6 +42,67 @@
 
 ## 🧩 LAS 3 PIEZAS DEL SISTEMA
 
+---
+
+## 🧠 ARQUITECTURA DE OPTIMIZACIÓN Y DETECCIÓN DE INTENCIÓN (MULTILINGÜE)
+
+### 1. Preprocesamiento Ligero Multilingüe
+- Normalización: minúsculas, quitar tildes, eliminar signos.
+- Corrección ortográfica básica para palabras cortas y comunes.
+- Tokenización flexible.
+
+### 2. Detección de Idioma Eficiente
+- Usa `langdetect` o `langid` (solo si el mensaje tiene >2 palabras).
+- Cachea idioma por sesión si es consistente.
+
+### 3. Clasificación de Intenciones
+- Listas de frases clave multilingües (saludos, agradecimientos, despedidas, etc.) con variantes y errores comunes.
+- Expresiones regulares y similitud de texto (Levenshtein/Jaccard) para tolerar errores.
+- Heurísticas: mensajes muy cortos o solo emojis = "sin intención clara".
+
+### 4. Flujo de Decisión
+1. Recibe mensaje
+2. Normaliza y detecta idioma
+3. Clasifica intención:
+   - Si es saludo/agradecimiento/despedida → responde localmente en el idioma detectado.
+   - Si es pregunta frecuente → busca en base de conocimiento local (en el idioma del usuario).
+   - Si no hay respuesta local clara → llama a la API externa (Gemini).
+   - Si el mensaje es ambiguo o muy corto → pide aclaración antes de usar la API.
+
+### 5. Ejemplo de Pseudo-código
+```python
+def procesar_mensaje(mensaje, session):
+    msg = normalizar(mensaje)
+    idioma = session.idioma or detectar_idioma(msg)
+    intencion = clasificar_intencion(msg, idioma)
+    if intencion in ["saludo", "agradecimiento", "despedida"]:
+        return responder_local(intencion, idioma)
+    respuesta = buscar_en_base_conocimiento(msg, idioma)
+    if respuesta:
+        return respuesta
+    if es_ambigua(msg):
+        return pedir_aclaracion(idioma)
+    if session.cache.get(msg):
+        return session.cache[msg]
+    respuesta_api = llamar_api_ia(msg, idioma)
+    session.cache[msg] = respuesta_api
+    return respuesta_api
+```
+
+### 6. Técnicas para Minimizar Consumo de API
+- Prioriza lógica local y caching.
+- Rate limiting por usuario.
+- Batching de mensajes si es necesario.
+- Logs para mejorar reglas y reducir llamadas innecesarias.
+
+### 7. Manejo de Errores y Multilingüismo
+- Similitud de texto para errores ortográficos.
+- Variantes informales y abreviaturas en listas de intenciones.
+- Si mezcla idiomas, responde en el predominante o pide aclaración.
+
+---
+
+
 ```
     PIEZA 1                    PIEZA 2                    PIEZA 3
     ────────                   ────────                   ────────

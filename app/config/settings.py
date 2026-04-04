@@ -32,6 +32,6 @@ class Settings(BaseSettings):
         if self.allowed_origins == "*":
             return ["*"]
         return [origin.strip() for origin in self.allowed_origins.split(",")]
-
+    
 
 settings = Settings()
