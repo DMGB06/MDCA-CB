@@ -1,21 +1,15 @@
 import logging
-from fastapi import APIRouter, HTTPException, status, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, HTTPException, status, WebSocket, WebSocketDisconnect, Request
 from app.models.chat import ChatRequest, ChatResponse
 from app.services.chat_service import process_message
-from slowapi.util import get_remote_address
-from slowapi.errors import RateLimitExceeded
-from slowapi import Limiter, _rate_limit_exceeded_handler
-from slowapi.extension import Limiter
-
-
-from app.main import limiter
+from app.middleware.rate_limit import limiter
 
 router = APIRouter(prefix="/chat", tags=["chat"])
 logger = logging.getLogger(__name__)
 
 @router.post("/", response_model=ChatResponse)
-@limiter.limit("5/minute") 
-async def chat_endpoint(payload: ChatRequest) -> ChatResponse:
+@limiter.limit("5/minute")
+async def chat_endpoint(payload: ChatRequest, request: Request) -> ChatResponse:
     """
     Recibe un mensaje del usuario y responde usando Gemini.
     """

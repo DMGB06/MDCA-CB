@@ -13,17 +13,20 @@
     maxMessageLength: 500,
     reconnectDelay: 3000,
     maxReconnectAttempts: 5,
+    // 👇 CAMBIA ESTA URL por la ruta real de tu logo
+    logoUrl: 'URL_DE_TU_LOGO_AQUI',
   };
 
   // ============================================================
-  // COLORES - Personaliza aquí
+  // COLORES - Personalizados
   // ============================================================
   const COLORS = {
     primary: '#3d7dae',
     primaryDark: '#2c5d82',
     primaryLight: '#5a9bc9',
-    botBubble: '#3d7dae',
-    userBubble: '#4a8dbe',
+    botBubble: '#3d7dae',       // Bot: azul institucional
+    userBubble: '#16a34a',      // Usuario: verde (diferenciado)
+    userBubbleDark: '#15803d',  // Usuario hover/dark
     background: '#f5f7fa',
     text: '#1e3a52',
     white: '#ffffff',
@@ -43,14 +46,14 @@
     }
 
     /* ══════════════════════════════════════════════════════════
-       BOTÓN FLOTANTE (Bubble)
+       BOTÓN FLOTANTE (Bubble) - más pequeño
        ══════════════════════════════════════════════════════════ */
     .muni-bubble {
       position: fixed;
       bottom: 24px;
       right: 24px;
-      width: 64px;
-      height: 64px;
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
       background: ${COLORS.primaryDark};
       box-shadow: 0 4px 20px rgba(61, 125, 174, 0.4);
@@ -69,8 +72,8 @@
     }
 
     .muni-bubble-icon {
-      width: 32px;
-      height: 32px;
+      width: 24px;
+      height: 24px;
       fill: ${COLORS.white};
     }
 
@@ -79,7 +82,7 @@
        ══════════════════════════════════════════════════════════ */
     .muni-window {
       position: fixed;
-      bottom: 100px;
+      bottom: 86px;
       right: 24px;
       width: 400px;
       height: 520px;
@@ -124,6 +127,14 @@
       justify-content: center;
       flex-shrink: 0;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .muni-header-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
     }
 
     .muni-header-logo svg {
@@ -252,12 +263,14 @@
       word-break: break-word;
     }
 
+    /* Bot: azul */
     .muni-msg.bot .muni-msg-bubble {
       background: ${COLORS.botBubble};
       color: ${COLORS.white};
       border-bottom-left-radius: 4px;
     }
 
+    /* Usuario: verde - claramente diferente */
     .muni-msg.user .muni-msg-bubble {
       background: ${COLORS.userBubble};
       color: ${COLORS.white};
@@ -419,19 +432,19 @@
         width: calc(100vw - 16px);
         height: calc(100vh - 100px);
         max-height: 600px;
-        bottom: 90px;
+        bottom: 80px;
         right: 8px;
         border-radius: 16px;
       }
       .muni-bubble {
         bottom: 16px;
         right: 16px;
-        width: 56px;
-        height: 56px;
+        width: 44px;
+        height: 44px;
       }
       .muni-bubble-icon {
-        width: 28px;
-        height: 28px;
+        width: 22px;
+        height: 22px;
       }
     }
   `;
@@ -444,15 +457,18 @@
     styleEl.textContent = styles;
     document.head.appendChild(styleEl);
 
+    // Construir el contenido del logo según si hay URL configurada
+    const logoContent = CONFIG.logoUrl && CONFIG.logoUrl !== 'URL_DE_TU_LOGO_AQUI'
+      ? `<img src="${CONFIG.logoUrl}" alt="Logo" />`
+      : `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>`;
+
     const wrapper = document.createElement('div');
     wrapper.className = 'muni-widget';
     wrapper.innerHTML = `
       <div class="muni-window" id="muniWindow">
         <div class="muni-header">
           <div class="muni-header-logo">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-            </svg>
+            ${logoContent}
           </div>
           <div class="muni-header-info">
             <div class="muni-header-name">${CONFIG.botName}</div>
@@ -482,14 +498,7 @@
               rows="1"
               maxlength="${CONFIG.maxMessageLength}"
             ></textarea>
-            <div class="muni-input-icons">
-              <button class="muni-input-icon" title="Adjuntar archivo">
-                <svg viewBox="0 0 24 24"><path d="M16.5 6v11.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V5c0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5v10.5c0 .55-.45 1-1 1s-1-.45-1-1V6H10v9.5c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5V5c0-2.21-1.79-4-4-4S7 2.79 7 5v12.5c0 3.04 2.46 5.5 5.5 5.5s5.5-2.46 5.5-5.5V6h-1.5z"/></svg>
-              </button>
-              <button class="muni-input-icon" title="Mensaje de voz">
-                <svg viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.91-3c-.49 0-.9.36-.98.85C16.52 14.2 14.47 16 12 16s-4.52-1.8-4.93-4.15c-.08-.49-.49-.85-.98-.85-.61 0-1.09.54-1 1.14.49 3 2.89 5.35 5.91 5.78V20c0 .55.45 1 1 1s1-.45 1-1v-2.08c3.02-.43 5.42-2.78 5.91-5.78.1-.6-.39-1.14-1-1.14z"/></svg>
-              </button>
-            </div>
+  
           </div>
           <button class="muni-send-btn" id="muniSend" title="Enviar" disabled>
             <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>

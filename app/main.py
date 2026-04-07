@@ -13,8 +13,6 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(message)s"
 )
 
-
-
 app = FastAPI(
     title=settings.app_name,
     description="Asistente virtual inteligente para servicios municipales",
@@ -29,7 +27,6 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 # Configurar CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.origins_list,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
