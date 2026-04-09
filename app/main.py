@@ -7,11 +7,11 @@ from slowapi.errors import RateLimitExceeded
 from app.config.settings import settings
 from app.routers import health
 from app.routers import chat
+from app.utils import setup_logging
+from app.middleware.metrics import MetricsMiddleware
 
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(message)s"
-)
+# Configurar logging estructurado en JSON
+setup_logging()
 
 app = FastAPI(
     title=settings.app_name,
@@ -23,6 +23,9 @@ app = FastAPI(
 limiter = Limiter(key_func=get_remote_address)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+# Middleware de métricas (debe ir ANTES de CORS)
+app.add_middleware(MetricsMiddleware)
 
 # Configurar CORS
 app.add_middleware(
