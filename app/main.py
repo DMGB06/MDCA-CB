@@ -6,7 +6,7 @@ from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
 from app.config.settings import settings
 from app.routers import health
-from app.routers import chat
+from app.routers.chat import router as chat_router
 from app.utils import setup_logging
 from app.middleware.metrics import MetricsMiddleware
 
@@ -30,15 +30,16 @@ app.add_middleware(MetricsMiddleware)
 # Configurar CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=settings.origins_list,
+    allow_credentials=settings.allowed_credentials,
+    allow_methods=["GET", "POST"],
+    allow_headers=["Authorization", "Content-Type", "X-API-Key"],
 )
 
 # Registrar routers
 app.include_router(health.router)
 # Registrar router de chat
-app.include_router(chat.router)
+app.include_router(chat_router)
 
 @app.get("/")
 async def root():

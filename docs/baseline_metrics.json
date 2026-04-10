@@ -1,0 +1,42 @@
+{
+  "capture_date": "2026-04-09T14:39:35.289950Z",
+  "version": "v0.1.0-baseline",
+  "metrics": [
+    {
+      "endpoint": "/health",
+      "method": "GET",
+      "timestamp": "2026-04-09T14:37:21.121810Z",
+      "total_requests": 50,
+      "successful_requests": 50,
+      "failed_requests": 0,
+      "error_rate_percent": 0.0,
+      "latency_p50_ms": 2056.85,
+      "latency_p95_ms": 2078.66,
+      "latency_p99_ms": 2083.56,
+      "latency_avg_ms": 2056.24,
+      "latency_min_ms": 2021.18,
+      "latency_max_ms": 2083.56,
+      "latency_stddev_ms": 14.22,
+      "throughput_req_per_sec": 0.46,
+      "total_time_sec": 107.85
+    },
+    {
+      "endpoint": "/chat",
+      "method": "POST",
+      "timestamp": "2026-04-09T14:39:35.285643Z",
+      "total_requests": 50,
+      "successful_requests": 8,
+      "failed_requests": 42,
+      "error_rate_percent": 84.0,
+      "latency_p50_ms": 3973.97,
+      "latency_p95_ms": 4890.48,
+      "latency_p99_ms": 4890.48,
+      "latency_avg_ms": 4014.69,
+      "latency_min_ms": 3497.2,
+      "latency_max_ms": 4890.48,
+      "latency_stddev_ms": 436.27,
+      "throughput_req_per_sec": 0.37,
+      "total_time_sec": 134.16
+    }
+  ]
+}

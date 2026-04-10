@@ -1,35 +1,36 @@
 (function () {
-  'use strict';
+  "use strict";
 
   // ============================================================
   // CONFIGURACIÓN - Cambia esto según tu servidor
   // ============================================================
   const CONFIG = {
-    wsUrl: 'ws://localhost:8000/chat/ws',
-    botName: 'Asistente Virtual',
-    botStatus: 'En línea',
-    welcomeMessage: 'Hola, soy tu asistente virtual. Puedo ayudarte con trámites, consultas y servicios.',
-    placeholder: 'Escribe tu consulta...',
+    wsUrl: "ws://localhost:8000/chat/ws",
+    apikey: "",
+    botName: "Asistente Virtual",
+    botStatus: "En línea",
+    welcomeMessage:
+      "Hola, soy tu asistente virtual. Puedo ayudarte con trámites, consultas y servicios.",
+    placeholder: "Escribe tu consulta...",
     maxMessageLength: 500,
     reconnectDelay: 3000,
     maxReconnectAttempts: 5,
     // 👇 CAMBIA ESTA URL por la ruta real de tu logo
-    logoUrl: 'URL_DE_TU_LOGO_AQUI',
+    logoUrl: "URL_DE_TU_LOGO_AQUI",
   };
-
   // ============================================================
   // COLORES - Personalizados
   // ============================================================
   const COLORS = {
-    primary: '#3d7dae',
-    primaryDark: '#2c5d82',
-    primaryLight: '#5a9bc9',
-    botBubble: '#3d7dae',       // Bot: azul institucional
-    userBubble: '#16a34a',      // Usuario: verde (diferenciado)
-    userBubbleDark: '#15803d',  // Usuario hover/dark
-    background: '#f5f7fa',
-    text: '#1e3a52',
-    white: '#ffffff',
+    primary: "#3d7dae",
+    primaryDark: "#2c5d82",
+    primaryLight: "#5a9bc9",
+    botBubble: "#3d7dae", // Bot: azul institucional
+    userBubble: "#16a34a", // Usuario: verde (diferenciado)
+    userBubbleDark: "#15803d", // Usuario hover/dark
+    background: "#f5f7fa",
+    text: "#1e3a52",
+    white: "#ffffff",
   };
 
   // ============================================================
@@ -453,17 +454,18 @@
   // INICIALIZACIÓN
   // ============================================================
   function initWidget() {
-    const styleEl = document.createElement('style');
+    const styleEl = document.createElement("style");
     styleEl.textContent = styles;
     document.head.appendChild(styleEl);
 
     // Construir el contenido del logo según si hay URL configurada
-    const logoContent = CONFIG.logoUrl && CONFIG.logoUrl !== 'URL_DE_TU_LOGO_AQUI'
-      ? `<img src="${CONFIG.logoUrl}" alt="Logo" />`
-      : `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>`;
+    const logoContent =
+      CONFIG.logoUrl && CONFIG.logoUrl !== "URL_DE_TU_LOGO_AQUI"
+        ? `<img src="${CONFIG.logoUrl}" alt="Logo" />`
+        : `<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>`;
 
-    const wrapper = document.createElement('div');
-    wrapper.className = 'muni-widget';
+    const wrapper = document.createElement("div");
+    wrapper.className = "muni-widget";
     wrapper.innerHTML = `
       <div class="muni-window" id="muniWindow">
         <div class="muni-header">
@@ -520,14 +522,14 @@
   // FUNCIONALIDAD
   // ============================================================
   function initFunctionality() {
-    const bubble   = document.getElementById('muniBubble');
-    const window_  = document.getElementById('muniWindow');
-    const messages = document.getElementById('muniMessages');
-    const input    = document.getElementById('muniInput');
-    const sendBtn  = document.getElementById('muniSend');
-    const closeBtn = document.getElementById('muniClose');
-    const minimizeBtn = document.getElementById('muniMinimize');
-    const errorBar = document.getElementById('muniErrorBar');
+    const bubble = document.getElementById("muniBubble");
+    const window_ = document.getElementById("muniWindow");
+    const messages = document.getElementById("muniMessages");
+    const input = document.getElementById("muniInput");
+    const sendBtn = document.getElementById("muniSend");
+    const closeBtn = document.getElementById("muniClose");
+    const minimizeBtn = document.getElementById("muniMinimize");
+    const errorBar = document.getElementById("muniErrorBar");
 
     let ws = null;
     let isOpen = false;
@@ -539,7 +541,7 @@
     // ── Abrir / cerrar ──────────────────────────────────────
     function openChat() {
       isOpen = true;
-      window_.classList.add('open');
+      window_.classList.add("open");
       bubble.innerHTML = `<svg class="muni-bubble-icon" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>`;
       if (!ws || ws.readyState !== WebSocket.OPEN) connectWS();
       setTimeout(() => input.focus(), 300);
@@ -547,7 +549,7 @@
 
     function closeChat() {
       isOpen = false;
-      window_.classList.remove('open');
+      window_.classList.remove("open");
       bubble.innerHTML = `<svg class="muni-bubble-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>`;
     }
 
@@ -556,22 +558,23 @@
       else openChat();
     }
 
-    bubble.addEventListener('click', toggleChat);
-    closeBtn.addEventListener('click', closeChat);
-    minimizeBtn.addEventListener('click', closeChat);
+    bubble.addEventListener("click", toggleChat);
+    closeBtn.addEventListener("click", closeChat);
+    minimizeBtn.addEventListener("click", closeChat);
 
     // ── WebSocket ────────────────────────────────────────────
     function connectWS() {
       if (reconnectTimer) clearTimeout(reconnectTimer);
       try {
-        ws = new WebSocket(CONFIG.wsUrl);
+        const wsUrlWithKey = `${CONFIG.wsUrl}?api_key=${encodeURIComponent(CONFIG.apiKey)}`;
+        ws = new WebSocket(wsUrlWithKey);
 
         ws.onopen = () => {
           reconnectAttempts = 0;
           setError(false);
           sendBtn.disabled = false;
           if (!welcomeShown) {
-            addMessage(CONFIG.welcomeMessage, 'bot');
+            addMessage(CONFIG.welcomeMessage, "bot");
             welcomeShown = true;
           }
         };
@@ -580,10 +583,11 @@
           hideTyping();
           try {
             const data = JSON.parse(event.data);
-            if (data.response) addMessage(data.response, 'bot');
-            else if (data.error) addMessage('Ocurrió un error. Intenta nuevamente.', 'bot');
+            if (data.response) addMessage(data.response, "bot");
+            else if (data.error)
+              addMessage("Ocurrió un error. Intenta nuevamente.", "bot");
           } catch {
-            addMessage(event.data, 'bot');
+            addMessage(event.data, "bot");
           }
         };
 
@@ -601,11 +605,10 @@
             setError(true);
             reconnectTimer = setTimeout(connectWS, CONFIG.reconnectDelay);
           } else {
-            errorBar.textContent = 'No se pudo conectar. Recarga la página.';
+            errorBar.textContent = "No se pudo conectar. Recarga la página.";
             setError(true);
           }
         };
-
       } catch {
         setError(true);
       }
@@ -613,7 +616,7 @@
 
     // ── Mensajes ─────────────────────────────────────────────
     function addMessage(text, sender) {
-      const msg = document.createElement('div');
+      const msg = document.createElement("div");
       msg.className = `muni-msg ${sender}`;
       msg.innerHTML = `<div class="muni-msg-bubble">${escapeHtml(text)}</div>`;
       messages.appendChild(msg);
@@ -622,19 +625,24 @@
 
     function showTyping() {
       if (typingEl) return;
-      typingEl = document.createElement('div');
-      typingEl.className = 'muni-msg bot';
+      typingEl = document.createElement("div");
+      typingEl.className = "muni-msg bot";
       typingEl.innerHTML = `<div class="muni-typing"><span></span><span></span><span></span></div>`;
       messages.appendChild(typingEl);
       scrollBottom();
     }
 
     function hideTyping() {
-      if (typingEl) { typingEl.remove(); typingEl = null; }
+      if (typingEl) {
+        typingEl.remove();
+        typingEl = null;
+      }
     }
 
     function scrollBottom() {
-      setTimeout(() => { messages.scrollTop = messages.scrollHeight; }, 50);
+      setTimeout(() => {
+        messages.scrollTop = messages.scrollHeight;
+      }, 50);
     }
 
     // ── Enviar ───────────────────────────────────────────────
@@ -642,52 +650,54 @@
       const text = input.value.trim();
       if (!text) return;
       if (!ws || ws.readyState !== WebSocket.OPEN) {
-        addMessage('Sin conexión. Espera un momento e intenta de nuevo.', 'bot');
+        addMessage(
+          "Sin conexión. Espera un momento e intenta de nuevo.",
+          "bot",
+        );
         return;
       }
-      addMessage(text, 'user');
-      input.value = '';
-      input.style.height = 'auto';
+      addMessage(text, "user");
+      input.value = "";
+      input.style.height = "auto";
       showTyping();
       try {
         ws.send(text);
       } catch {
         hideTyping();
-        addMessage('Error al enviar. Intenta de nuevo.', 'bot');
+        addMessage("Error al enviar. Intenta de nuevo.", "bot");
       }
     }
 
-    sendBtn.addEventListener('click', sendMessage);
+    sendBtn.addEventListener("click", sendMessage);
 
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
         sendMessage();
       }
     });
 
-    input.addEventListener('input', () => {
-      input.style.height = 'auto';
-      input.style.height = Math.min(input.scrollHeight, 90) + 'px';
+    input.addEventListener("input", () => {
+      input.style.height = "auto";
+      input.style.height = Math.min(input.scrollHeight, 90) + "px";
     });
 
     // ── Utilidades ───────────────────────────────────────────
     function setError(show) {
-      errorBar.classList.toggle('show', show);
+      errorBar.classList.toggle("show", show);
     }
 
     function escapeHtml(text) {
-      const div = document.createElement('div');
+      const div = document.createElement("div");
       div.textContent = text;
-      return div.innerHTML.replace(/\n/g, '<br>');
+      return div.innerHTML.replace(/\n/g, "<br>");
     }
   }
 
   // ── Arrancar cuando el DOM esté listo ────────────────────
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initWidget);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initWidget);
   } else {
     initWidget();
   }
-
 })();
