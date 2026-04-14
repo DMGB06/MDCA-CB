@@ -17,8 +17,8 @@ services:
     image: grafana/promtail:2.9.0
     volumes:
       - ./promtail-config.yml:/etc/promtail/config.yml
-      - /var/log:/var/log  # Logs del sistema
-      - ./logs:/app/logs   # Logs de la aplicación
+      - /var/log:/var/log # Logs del sistema
+      - ./logs:/app/logs # Logs de la aplicación
     command: -config.file=/etc/promtail/config.yml
     networks:
       - monitoring
