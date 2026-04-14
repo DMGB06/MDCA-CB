@@ -6,7 +6,6 @@
   // ============================================================
   const CONFIG = {
     wsUrl: "ws://localhost:8000/chat/ws",
-    apikey: "",
     botName: "Asistente Virtual",
     botStatus: "En línea",
     welcomeMessage:
@@ -566,8 +565,7 @@
     function connectWS() {
       if (reconnectTimer) clearTimeout(reconnectTimer);
       try {
-        const wsUrlWithKey = `${CONFIG.wsUrl}?api_key=${encodeURIComponent(CONFIG.apiKey)}`;
-        ws = new WebSocket(wsUrlWithKey);
+        ws = new WebSocket(CONFIG.wsUrl);
 
         ws.onopen = () => {
           reconnectAttempts = 0;
