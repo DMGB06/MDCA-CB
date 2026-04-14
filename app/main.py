@@ -9,15 +9,28 @@ from app.routers import health
 from app.routers.chat import router as chat_router
 from app.utils import setup_logging
 from app.middleware.metrics import MetricsMiddleware
+from contextlib import asynccontextmanager
 
 # Configurar logging estructurado en JSON
 setup_logging()
+
+@asynccontextmanager
+async def lifespan(app):
+    # Validación crítica de settings al arrancar
+    _ = settings.origins_list
+    if not settings.gemini_api_key:
+        raise ValueError("GEMINI_API_KEY no configurada")
+    if not settings.api_key:
+        raise ValueError("API_KEY no configurada")
+    yield
+
 
 app = FastAPI(
     title=settings.app_name,
     description="Asistente virtual inteligente para servicios municipales",
     version="0.1.0",
-    debug=settings.debug
+    debug=settings.debug, 
+    lifespan=lifespan
 )
 
 limiter = Limiter(key_func=get_remote_address)
@@ -40,6 +53,7 @@ app.add_middleware(
 app.include_router(health.router)
 # Registrar router de chat
 app.include_router(chat_router)
+
 
 @app.get("/")
 async def root():

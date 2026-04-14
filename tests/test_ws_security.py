@@ -7,7 +7,10 @@ def test_ws_requires_api_key(client):
 
 
 def test_ws_connects_with_api_key(client):
-    with client.websocket_connect("/chat/ws?api_key=test-api-key") as ws:
+    with client.websocket_connect(
+        "/chat/ws?api_key=test-api-key",
+        headers={"origin": "http://localhost:3000"}
+    ) as ws:
         ws.send_text("hola")
         data = ws.receive_json()
         assert "response" in data
