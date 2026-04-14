@@ -5,7 +5,7 @@ from fastapi.testclient import TestClient
 # Variables mínimas para que app/main importe sin romper
 os.environ.setdefault("GEMINI_API_KEY", "test-gemini-key")
 os.environ.setdefault("API_KEY", "test-api-key")
-os.environ.setdefault("ALLOWED_ORIGINS", "http://localhost:8080")
+os.environ.setdefault("ALLOWED_ORIGINS", "http://localhost:3000,http://localhost:8080")
 os.environ.setdefault("ALLOWED_CREDENTIALS", "false")
 os.environ.setdefault("MAX_MESSAGE_LENGTH", "500")
 
