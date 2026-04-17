@@ -9,7 +9,7 @@ router = APIRouter(tags=["health"])
 async def health_check() -> Dict[str, Any]:
     """
     Endpoint de verificación de salud del servidor.
-    
+
     Returns:
         Dict con estado del servidor y timestamp
     """

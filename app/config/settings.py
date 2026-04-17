@@ -5,6 +5,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 ENV_FILE = f".env.{os.getenv('APP_ENV', 'dev')}"
 
+
 class Settings(BaseSettings):
     app_env: Literal["dev", "prod"] = "dev"
 
@@ -47,12 +48,18 @@ class Settings(BaseSettings):
     def origins_list(self) -> List[str]:
         if self.allowed_origins == "*":
             return ["*"]
-        return [o.strip() for o in self.allowed_origins.split(",") if o.strip()]
+        return [o.strip()
+                for o
+                in self.allowed_origins.split(",")
+                if o.strip()
+                ]
 
     @model_validator(mode="after")
     def validate_config(self):
         if self.allowed_origins == "*" and self.allowed_credentials:
-            raise ValueError("No se permite ALLOWED_ORIGINS='*' con ALLOW_CREDENTIALS=True")
+            raise ValueError(
+                "No se permite ALLOWED_ORIGINS='*' con ALLOW_CREDENTIALS=True"
+                )
 
         if self.app_env == "prod":
             if self.debug:
@@ -62,7 +69,10 @@ class Settings(BaseSettings):
             if not self.api_key:
                 raise ValueError("Falta API_KEY en producción")
             if self.allowed_origins == "*":
-                raise ValueError("En producción ALLOWED_ORIGINS no puede ser '*'")
+                raise ValueError(
+                    "En producción ALLOWED_ORIGINS no puede ser '*'"
+                    )
         return self
+
 
 settings = Settings()

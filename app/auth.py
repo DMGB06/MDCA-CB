@@ -4,6 +4,7 @@ from app.config.settings import settings
 
 api_key_header = APIKeyHeader(name="X-API-Key", auto_error=True)
 
+
 def verify_api_key_value(api_key: str | None):
     if not settings.api_key:
         raise HTTPException(

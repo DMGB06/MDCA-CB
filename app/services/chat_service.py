@@ -6,11 +6,13 @@ from app.services.gemini_service import gemini_service
 # Configuración del logger para este archivo
 logger = logging.getLogger(__name__)
 
+
 def sanitize_input(text: str) -> str:
     text = text.replace("\x00", "")
     text = re.sub(r"[\x00-\x1f\x7f]", " ", text)
     text = " ".join(text.split())
     return text.strip()
+
 
 async def process_message(message: str, history=None) -> str:
     if history is None:
@@ -25,7 +27,7 @@ async def process_message(message: str, history=None) -> str:
     if local_info:
         logger.info("Respuesta usando base de conocimiento local.")
         prompt = f"""Eres el asistente virtual de la Municipalidad.
-Usa SOLO la siguiente información para responder. 
+Usa SOLO la siguiente información para responder.
 No inventes datos adicionales.
 
 INFORMACIÓN MUNICIPAL:
@@ -34,12 +36,12 @@ INFORMACIÓN MUNICIPAL:
 PREGUNTA DEL CIUDADANO: {safe_message}"""
     else:
         logger.info("Respuesta usando Gemini (fallback).")
-        prompt = f"""Eres el asistente virtual de la Municipalidad de Cerro Azul, Perú.
-    Responde SOLO sobre Cerro Azul. No inventes datos, si no sabes dilo claramente.
+        prompt = f"""Eres el asistente virtual de
+        la Municipalidad de Cerro Azul, Perú.
+        Responde SOLO sobre Cerro Azul.
+        No inventes datos, si no sabes dilo claramente.
 
 PREGUNTA: {safe_message}"""
-
-
     try:
         respuesta = await gemini_service.chat(prompt)
         logger.info("Respuesta generada correctamente.")
