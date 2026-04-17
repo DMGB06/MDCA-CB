@@ -3,6 +3,7 @@ from app.main import app
 
 client = TestClient(app)
 
+
 def test_ws_requires_api_key():
     try:
         with client.websocket_connect("/chat/ws"):

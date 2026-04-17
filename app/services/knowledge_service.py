@@ -1,5 +1,4 @@
 from pathlib import Path
-from typing import List
 import re
 
 KNOWLEDGE_DIR = Path(__file__).parent.parent / "knowledge"
@@ -12,10 +11,11 @@ STOPWORDS = {
     "sin", "sobre", "ser", "hay", "quien", "cual", "qué", "cómo"
 }
 
+
 def search_knowledge(query: str, max_results: int = 2) -> str:
     keywords = [
         w.lower() for w in re.findall(r'\w+', query)
-        if w.lower() not in STOPWORDS and len(w) > 2  # ← filtra stopwords y palabras muy cortas
+        if w.lower() not in STOPWORDS and len(w) > 2
     ]
 
     # Si no quedan keywords útiles, no busca nada
@@ -29,7 +29,9 @@ def search_knowledge(query: str, max_results: int = 2) -> str:
         content_lower = content.lower()
         score = sum(1 for keyword in keywords if keyword in content_lower)
         if score > 0:
-            scored_results.append((score, f"# {md_file.stem}\n" + content.strip()))
+            scored_results.append(
+                (score, f"# {md_file.stem}\n" + content.strip())
+            )
 
     scored_results.sort(reverse=True, key=lambda x: x[0])
     results = [r[1] for r in scored_results[:max_results]]

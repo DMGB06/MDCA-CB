@@ -1,5 +1,13 @@
 import logging
-from fastapi import APIRouter, HTTPException, status, WebSocket, WebSocketDisconnect, Request, Depends
+from fastapi import (
+    APIRouter,
+    HTTPException,
+    status,
+    WebSocket,
+    WebSocketDisconnect,
+    Request,
+    Depends
+    )
 from app.models.chat import ChatRequest, ChatResponse
 from app.services.chat_service import process_message
 from app.middleware.rate_limit import limiter
@@ -10,9 +18,12 @@ router = APIRouter(prefix="/chat", tags=["chat"])
 logger = logging.getLogger(__name__)
 
 
-@router.post("/", response_model=ChatResponse, dependencies=[Depends(verify_api_key)])
+@router.post("/",
+             response_model=ChatResponse,
+             dependencies=[Depends(verify_api_key)])
 @limiter.limit("5/minute")
-async def chat_endpoint(payload: ChatRequest, request: Request) -> ChatResponse:
+async def chat_endpoint(payload: ChatRequest,
+                        request: Request) -> ChatResponse:
     try:
         respuesta = await process_message(payload.message)
         return ChatResponse(response=respuesta)
