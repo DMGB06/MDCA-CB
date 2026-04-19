@@ -22,7 +22,7 @@ jobs:
       - name: Instalar dependencias
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install -e .[dev]
 
       - name: Correr lint
         run: flake8 .
