@@ -26,9 +26,7 @@ jobs:
           pip install flake8
 
       - name: Correr lint
-        run: |
-          pip install flake8
-          flake8 .
+        run: flake8 .
 
       - name: Correr tests
         run: |
