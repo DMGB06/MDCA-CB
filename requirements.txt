@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+slowapi
+google-genai
+pydantic
+pydantic-settings
+python-dotenv
+tenacity
+starlette
+httpx
+pytest
+pytest-asyncio
+pytest-cov
+flake8
