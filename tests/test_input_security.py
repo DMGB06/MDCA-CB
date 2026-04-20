@@ -1,4 +1,4 @@
-from app.services.chat_service import sanitize_input
+from app.domain.services.chat_service import sanitize_input
 
 
 def test_sanitize_removes_control_chars():

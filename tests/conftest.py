@@ -13,15 +13,14 @@ os.environ.setdefault("MAX_MESSAGE_LENGTH", "500")
 
 
 @pytest.fixture
-def client(monkeypatch):
+def client():
     from app.main import app
+    from app.domain.services.chat_service import set_llm_provider, reset_llm_provider
+    from app.infrastructure.llm.providers.mock_provider import MockLLMProvider
 
-    async def fake_chat(_prompt: str) -> str:
-        return "respuesta-mock"
+    set_llm_provider(MockLLMProvider(response_text="respuesta-mock"))
 
-    # Evita llamadas reales a Gemini
-    monkeypatch.setattr(
-        "app.services.chat_service.gemini_service.chat",
-        fake_chat)
+    with TestClient(app) as test_client:
+        yield test_client
 
-    return TestClient(app)
+    reset_llm_provider()

@@ -8,11 +8,11 @@ from fastapi import (
     Request,
     Depends
     )
-from app.models.chat import ChatRequest, ChatResponse
-from app.services.chat_service import process_message
-from app.middleware.rate_limit import limiter
-from app.auth import verify_api_key
-from app.config.settings import settings
+from app.api.schemas.chat import ChatRequest, ChatResponse
+from app.domain.services.chat_service import process_message
+from app.shared.security.rate_limit import limiter
+from app.shared.security.auth import verify_api_key
+from app.shared.config.settings import settings
 
 router = APIRouter(prefix="/chat", tags=["chat"])
 logger = logging.getLogger(__name__)

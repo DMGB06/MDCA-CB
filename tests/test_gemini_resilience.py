@@ -1,5 +1,5 @@
 import pytest
-from app.services.gemini_service import GeminiService
+from app.domain.services.gemini_service import GeminiService
 
 
 @pytest.mark.asyncio
@@ -7,15 +7,9 @@ async def test_retry_success_on_third_attempt(monkeypatch):
     svc = GeminiService()
     calls = {"n": 0}
 
-    monkeypatch.setattr(
-        "app.services.gemini_service.settings.gemini_timeout_seconds",
-        0.1)
-    monkeypatch.setattr(
-        "app.services.gemini_service.settings.gemini_max_retries",
-        3)
-    monkeypatch.setattr(
-        "app.services.gemini_service.settings.gemini_retry_wait_seconds",
-        0)
+    monkeypatch.setattr(svc.settings, "gemini_timeout_seconds", 0.1)
+    monkeypatch.setattr(svc.settings, "gemini_max_retries", 3)
+    monkeypatch.setattr(svc.settings, "gemini_retry_wait_seconds", 0)
 
     def flaky_generate_content(**kwargs):
         calls["n"] += 1
@@ -39,15 +33,9 @@ async def test_retry_success_on_third_attempt(monkeypatch):
 async def test_timeout_raises_fast(monkeypatch):
     svc = GeminiService()
 
-    monkeypatch.setattr(
-        "app.services.gemini_service.settings.gemini_timeout_seconds",
-        0.1)
-    monkeypatch.setattr(
-        "app.services.gemini_service.settings.gemini_max_retries",
-        2)
-    monkeypatch.setattr(
-        "app.services.gemini_service.settings.gemini_retry_wait_seconds",
-        0)
+    monkeypatch.setattr(svc.settings, "gemini_timeout_seconds", 0.1)
+    monkeypatch.setattr(svc.settings, "gemini_max_retries", 2)
+    monkeypatch.setattr(svc.settings, "gemini_retry_wait_seconds", 0)
 
     def always_fail(**kwargs):
         raise TimeoutError("timeout inmediato")

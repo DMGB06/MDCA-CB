@@ -1,5 +1,5 @@
 import pytest
-from app.services.circuit_breaker import CircuitBreaker, CircuitState
+from app.infrastructure.resilience.circuit_breaker import CircuitBreaker, CircuitState
 
 
 def test_breaker_opens_after_fail_max():

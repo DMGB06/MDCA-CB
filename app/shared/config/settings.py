@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     # Gemini API
     gemini_api_key: str = ""
     gemini_model: str = "models/gemini-2.5-flash"
+    llm_provider: Literal["gemini", "mock"] = "gemini"
 
     # CORS
     allowed_origins: str = "http://localhost:3000,http://localhost:8080"

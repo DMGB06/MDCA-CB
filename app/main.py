@@ -3,11 +3,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
-from app.config.settings import settings
-from app.routers import health
-from app.routers.chat import router as chat_router
-from app.utils import setup_logging
-from app.middleware.metrics import MetricsMiddleware
+from app.shared.config.settings import settings
+from app.api.routers import health
+from app.api.routers.chat import router as chat_router
+from app.shared.observability.logging import setup_logging
+from app.shared.observability.metrics import MetricsMiddleware
 from contextlib import asynccontextmanager
 
 # Configurar logging estructurado en JSON

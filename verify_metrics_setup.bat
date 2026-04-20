@@ -42,7 +42,7 @@ if %ERRORLEVEL% EQU 0 (
 
 echo.
 echo [3/5] Probando importaciones...
-python -c "from app.utils import setup_logging; from app.middleware.metrics import MetricsMiddleware; print('  - Imports OK')" 2>nul
+python -c "from app.shared.observability.logging import setup_logging; from app.shared.observability.metrics import MetricsMiddleware; print('  - Imports OK')" 2>nul
 if %ERRORLEVEL% NEQ 0 (
     echo   - ERROR: Verifica que los archivos estén correctamente creados
 )

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect
-from app.services.chat_service import process_message
+from app.domain.services.chat_service import process_message
 router = APIRouter()
 
 

@@ -1,6 +1,6 @@
 from pydantic import BaseModel, Field, field_validator
 from typing import Optional
-from app.config.settings import settings
+from app.shared.config.settings import settings
 
 
 class ChatRequest(BaseModel):

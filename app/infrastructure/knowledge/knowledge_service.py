@@ -1,7 +1,7 @@
 from pathlib import Path
 import re
 
-KNOWLEDGE_DIR = Path(__file__).parent.parent / "knowledge"
+KNOWLEDGE_DIR = Path(__file__).parent / "files"
 
 # Palabras que ignoramos porque aparecen en todo
 STOPWORDS = {
