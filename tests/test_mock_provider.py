@@ -18,7 +18,10 @@ async def test_mock_provider_returns_configured_response():
 async def test_mock_provider_can_simulate_failure():
     provider = MockLLMProvider(should_fail=True)
 
-    with pytest.raises(RuntimeError, match="Mock provider configurado para fallar"):
+    with pytest.raises(
+        RuntimeError,
+        match="Mock provider configurado para fallar",
+    ):
         await provider.chat(LLMChatRequest(prompt="hola"))
 
 

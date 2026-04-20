@@ -1,5 +1,6 @@
 from app.infrastructure.knowledge.knowledge_service import search_knowledge
 
+
 def test_search_knowledge_tramite():
     result = search_knowledge("licencia de funcionamiento")
     assert "Licencia de Funcionamiento" in result

@@ -15,7 +15,10 @@ os.environ.setdefault("MAX_MESSAGE_LENGTH", "500")
 @pytest.fixture
 def client():
     from app.main import app
-    from app.domain.services.chat_service import set_llm_provider, reset_llm_provider
+    from app.domain.services.chat_service import (
+        reset_llm_provider,
+        set_llm_provider,
+    )
     from app.infrastructure.llm.providers.mock_provider import MockLLMProvider
 
     set_llm_provider(MockLLMProvider(response_text="respuesta-mock"))

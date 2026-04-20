@@ -7,7 +7,8 @@ _provider_instance: LLMProvider | None = None
 
 
 def create_llm_provider(provider_name: str | None = None) -> LLMProvider:
-    selected_provider = (provider_name or settings.llm_provider).strip().lower()
+    selected_provider = provider_name or settings.llm_provider
+    selected_provider = selected_provider.strip().lower()
 
     if selected_provider == "gemini":
         return GeminiProvider()
